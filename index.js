@@ -33,7 +33,7 @@ app.post('/',(req,res)=>{
                 })
             }else{
                 return await newUrl.save(async (error,result) =>{
-                    return await res.status(201).json({error,result,newUrl:'http://localhost:3000/'+short})
+                    return await res.status(201).json({error,result,newUrl:'https://url-shortner-00.herokuapp.com/'+short})
                 })
             }
         })
