@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const PORT = process.env.PORT || 3000
 
-
+console.log('Hello World')
 mongoose.connect('mongodb+srv://rishavjnv12:F13JqNRNT2h5xvNj@ecom.oi6ak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
     useUnifiedTopology: true,
     useNewUrlParser: true,
