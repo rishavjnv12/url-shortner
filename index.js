@@ -15,6 +15,9 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
 const Url = require('./models/url')
+app.get('/',(req,res) => {
+    res.send('Khul ja bsdk')
+})
 
 app.post('/',(req,res)=>{
     console.log(req.hostname)
