@@ -22,13 +22,12 @@ const Url = require('./models/url')
 
 app.get('/', async (req, res) => {
     const shortUrls = await Url.find()
-    console.log(shortUrls)
+    shortUrls.reverse()
     res.render('index', { shortUrls: shortUrls })
 })
   
 
 app.post('/',(req,res)=>{
-    console.log(req.hostname)
     const url = req.body.url
 
     const newUrl = new Url({url})
