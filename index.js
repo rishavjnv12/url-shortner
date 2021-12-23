@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const ejs = require('ejs')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -13,34 +14,36 @@ mongoose.connect('mongodb+srv://rishavjnv12:F13JqNRNT2h5xvNj@ecom.oi6ak.mongodb.
 })
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+app.set('view engine', 'ejs')
+
 
 const Url = require('./models/url')
-app.get('/',(req,res) => {
-    res.send('Khul ja bsdk')
+
+
+app.get('/', async (req, res) => {
+    const shortUrls = await Url.find()
+    console.log(shortUrls)
+    res.render('index', { shortUrls: shortUrls })
 })
+  
 
 app.post('/',(req,res)=>{
     console.log(req.hostname)
     const url = req.body.url
-    const short = req.body.short
-    if(url === undefined || short === undefined){
-        return res.status(500).json({
-            error:'Url not provided'
-        })
-    }else{
-        const newUrl = new Url({url,short})
-        Url.find({short},async (err,result)=>{
-            if(result.length === 1){
-                return await res.status(400).json({
-                    error:"Already exists"
-                })
-            }else{
-                return await newUrl.save(async (error,result) =>{
-                    return await res.status(201).json({error,result,newUrl:'https://url-shortner-00.herokuapp.com/'+short})
-                })
-            }
-        })
-    }
+
+    const newUrl = new Url({url})
+    Url.find({short:newUrl.short},async (err,result)=>{
+        if(result.length === 1){
+            return await res.status(400).json({
+                error:"Already exists"
+            })
+        }else{
+            return await newUrl.save(async (error,result) =>{
+                // return await res.status(201).json({error,result,newUrl:'https://url-shortner-00.herokuapp.com/'+newUrl.short})
+                return await res.status(201).redirect('/')
+            })
+        }
+    })
 })
 
 
